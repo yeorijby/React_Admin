@@ -1,7 +1,7 @@
 https://www.youtube.com/watch?v=wYpCWwD1oz0
 
 
-npm install @mui/material @emotion/react @emotion/styled @mui/icons-material @mui/x-data-grid  react-router-dom@6 react-pro-sidebar formik yup @fullcalendar/core @fullcalendar/daygrid @fullcalendar/timegrid @fullcalendar/list @nivo/core @nivo/pie @nivo/line @nivo/bar @nivo/geo @nivo/radar  --force
+npm install @mui/material @emotion/react @emotion/styled @mui/icons-material @mui/x-data-grid  react-router-dom@6 react-pro-sidebar formik yup @fullcalendar/core @fullcalendar/daygrid @fullcalendar/timegrid @fullcalendar/list @nivo/core @nivo/pie @nivo/line @nivo/bar @nivo/geo @nivo/radar --force
 
 npm install @mui/material --force			
 npm install @emotion/react --force			        
