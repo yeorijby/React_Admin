@@ -65,10 +65,6 @@ const Team = () => {
                 "& .MuiDataGrid-virtualScroller": {
                     backgroundColor : colors.primary[400],
                 },
-                "& .MuiDataGrid-columnHeaders": {
-                    borderTop : "none",
-                    backgroundColor : colors.blueAccent[700],
-                },
             }}>
                 <DataGrid
                     rows={mockDataTeam}
