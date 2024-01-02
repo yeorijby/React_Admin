@@ -59,63 +59,40 @@ const Calendar = () => {
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
-  // const handleDateClick = (selected) => {
-  //   setEventData({
-  //     title: "",
-  //     classType: "",
-  //     memberName: "",
-  //     attendance: "",
-  //   });
-  //   setDialogOpen(true);
-  // };
-// handleDateClick 함수 수정
-const handleDateClick = (info) => {
-  setEventData({
-    title: "",
-    classType: "",
-    memberName: "",
-    attendance: "",
-    start: info.date,
-    end: info.date,
-  });
-
-  setDialogOpen(true);
-};
-
-const handleConfirmClick = () => {
-  const { title, classType, memberName, attendance } = eventData;
-  const calendarApi = calendarRef.current?.getApi();
-
-  if (calendarApi) {
-    const currentDate = calendarApi.view.activeStart;
-
-    // 예제 코드에서는 하나의 선택된 날짜만을 고려하고 있습니다.
-    // 만약 다중 선택이 가능하다면 해당 부분을 수정해야 합니다.
-    const selectedDate = currentDate;
-
-    // end를 하루 뒤의 날짜로 설정
-    const endDate = new Date(selectedDate);
-    endDate.setDate(selectedDate.getDate() + 1);
-
-    calendarApi.addEvent({
-      id: `${selectedDate.toISOString()}-${title}`,
-      title,
-      start: selectedDate,
-      end: endDate,
-      allDay: true,
-      classType,
-      memberName,
-      attendance,
+  const handleDateClick = (info) => {
+    setEventData({
+      title: "",
+      classType: "",
+      memberName: "",
+      attendance: "",
+      start: info.dateStr,
+      end: info.dateStr,
     });
-  }
 
-  handleDialogClose();
-};
+    setDialogOpen(true);
+  };
 
+  const handleConfirmClick = () => {
+    const { title, classType, memberName, attendance } = eventData;
+    const calendarApi = calendarRef.current?.getApi();
 
+    if (calendarApi) {
+      const selectedDate = calendarApi.getSelected()[0].start;
 
+      calendarApi.addEvent({
+        id: `${selectedDate.toISOString()}-${title}`,
+        title,
+        start: selectedDate,
+        end: selectedDate,
+        allDay: true,
+        classType,
+        memberName,
+        attendance,
+      });
+    }
 
-  
+    handleDialogClose();
+  };
   
 
 
@@ -196,8 +173,21 @@ const handleConfirmClick = () => {
         </Box>
       </Box>
       <Dialog open={dialogOpen} onClose={handleDialogClose}>
-        <DialogTitle>이벤트 정보 입력</DialogTitle>
+      <DialogTitle>이벤트 정보 입력</DialogTitle>
         <DialogContent>
+          <TextField
+            label="Selected Date"
+            value={formatDate(eventData.start, {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+            fullWidth
+            margin="normal"
+            InputProps={{
+              readOnly: true,
+            }}
+          />
           <TextField
             label="Title"
             value={eventData.title}
