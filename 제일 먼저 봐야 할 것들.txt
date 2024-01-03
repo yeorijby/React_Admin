@@ -21,7 +21,8 @@ npm install @nivo/bar --force
 npm install @nivo/geo --force
 npm install @nivo/radar --force
 
-
+// PostgreSQL database Drivers 설치(상당히오래걸림)
+npm install pg --force
 
 
 

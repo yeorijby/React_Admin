@@ -146,7 +146,8 @@ const Calendar = () => {
 
   return (
     <Box m="20px">
-      <Header title="CALENDAR" subtitle="Full Calendar Interactive Page" />
+      {/* <Header title="CALENDAR" subtitle="Full Calendar Interactive Page" /> */}
+      <Header title="일정관리" subtitle="일정을 관리하는 페이지 입니다." />
       <Box display="flex" justifyContent="space-between">
         <Box
           flex="1 1 20%"
@@ -159,11 +160,6 @@ const Calendar = () => {
             {currentEvents.map((event) => (
               <ListItem
                 key={event.id}
-                // sx={{
-                //   backgroundColor: colors.greenAccent[500],
-                //   margin: "10px 0",
-                //   borderRadius: "2px",
-                // }}
                 sx={{
                   backgroundColor:
                     event.classType === 'A'
@@ -217,10 +213,6 @@ const Calendar = () => {
             selectMirror={true}
             dayMaxEvents={true}
             select={handleDateClick}
-            // select={(info) => {
-            //   handleDateClick(info);
-            //   //setCurrentEvents([...currentEvents, info]);
-            // }}
             eventClick={handleEventClick}
             eventsSet={(events) => setCurrentEvents(events)}
             eventDrop={handleEventDrop} // 추가된 부분

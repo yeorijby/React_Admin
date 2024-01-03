@@ -32,11 +32,12 @@ const Form = () => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
 
     const handleFormSubmit = (values) => {
-        console.log(values);
+        // console.log(values);
+        alert(values);
     };
     return (
         <Box m="20px">
-            <Header title="CREATE USER" subtitle="Create a New User Profile" />
+            <Header title="CREATE MEMBER" subtitle="Create a New Member Profile" />
             <Formik 
                 onSubmit={handleFormSubmit} 
                 initialValues={initialValues}
