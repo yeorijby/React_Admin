@@ -159,11 +159,23 @@ const Calendar = () => {
             {currentEvents.map((event) => (
               <ListItem
                 key={event.id}
+                // sx={{
+                //   backgroundColor: colors.greenAccent[500],
+                //   margin: "10px 0",
+                //   borderRadius: "2px",
+                // }}
                 sx={{
-                  backgroundColor: colors.greenAccent[500],
+                  backgroundColor:
+                    event.classType === 'A'
+                      ? colors.greenAccent[500]
+                      : event.classType === 'B'
+                      ? colors.blueAccent[500]
+                      : event.classType === 'C'
+                      ? colors.redAccent[200]
+                      : colors.grey[500],
                   margin: "10px 0",
                   borderRadius: "2px",
-                }}
+                }}                
               >
                 <ListItemText
                   primary={event.title}
