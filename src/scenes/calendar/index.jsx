@@ -33,8 +33,12 @@ const Calendar = () => {
     classType: "",
     memberName: "",
     attendance: "",
-    dateStr: "",
+    dateStr: "",        // 추가됨
   });
+
+  //================================================================
+  // 웬만해서는 잘 바뀌지 않는 것들!
+  //================================================================
 
   const calendarRef = useRef();
 
@@ -55,12 +59,29 @@ const Calendar = () => {
 
       setCurrentEvents(initialEvents);
     }
-  }, []);
+  }, );   // 컴포넌트가 리렌더링 될때마다 useEffect 함수가 호출됨//                      // 기존소스 =>  }, []);       => 이경우는 맨처음의 한번만 실행되는 경우임
 
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
+
+  const handleEventClick = (selected) => {
+    if (
+      window.confirm(
+        `이 일정을 진짜로 지우고 싶은겨? '${selected.event.title}'`
+      )
+    ) {
+      selected.event.remove();
+    }
+  };
+
+  const handleInputChange = (fieldName) => (event) => {
+    setEventData({ ...eventData, [fieldName]: event.target.value });
+  };
+  //----------------------------------------------------------------
+
   const handleDateClick = (info) => {
+    //setCurrentEvents([info]);
     // if ((info.start != null) && (info.start != "")){
       setEventData({
         title: "",
@@ -83,7 +104,7 @@ const Calendar = () => {
     const { title, classType, memberName, attendance, start} = eventData;
     const calendarApi = calendarRef.current?.getApi();
 
-    alert(start);
+    //alert(start);
 
     if (calendarApi && (start !== null) && (start !== "")) {
       const selectedDate = start;   //calendarApi.getSelected()[0].start;
@@ -101,23 +122,27 @@ const Calendar = () => {
     }
 
     handleDialogClose();
+    //setCurrentEvents([]);
+    //setCurrentEvents([...currentEvents]);
   };
   
+  const handleEventDrop = (dropInfo) => {
+    const updatedEvents = currentEvents.map((event) =>
+      event.id === dropInfo.event.id
+        ? {
+            ...event,
+            start: dropInfo.event.start,
+            end: dropInfo.event.end,
+          }
+        : event
+    );
 
-
-  const handleInputChange = (fieldName) => (event) => {
-    setEventData({ ...eventData, [fieldName]: event.target.value });
+    setCurrentEvents(updatedEvents);
   };
 
-  const handleEventClick = (selected) => {
-    if (
-      window.confirm(
-        `이 일정을 진짜로 지우고 싶은겨? '${selected.event.title}'`
-      )
-    ) {
-      selected.event.remove();
-    }
-  };
+
+
+
 
   return (
     <Box m="20px">
@@ -143,13 +168,21 @@ const Calendar = () => {
                 <ListItemText
                   primary={event.title}
                   secondary={
-                    <Typography>
-                      {formatDate(event.start, {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
-                    </Typography>
+                    <Box>
+                      <Typography>
+                        {formatDate(event.start, {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        })}
+                      </Typography>
+                      <br />
+                      Class Type: {event.classType}
+                      <br />
+                      Member Name: {event.memberName}
+                      <br />
+                      Attendance: {event.attendance}
+                    </Box>
                   }
                 />
               </ListItem>
@@ -172,18 +205,59 @@ const Calendar = () => {
             selectMirror={true}
             dayMaxEvents={true}
             select={handleDateClick}
+            // select={(info) => {
+            //   handleDateClick(info);
+            //   //setCurrentEvents([...currentEvents, info]);
+            // }}
             eventClick={handleEventClick}
             eventsSet={(events) => setCurrentEvents(events)}
+            eventDrop={handleEventDrop} // 추가된 부분
             initialEvents={[
-              { id: "1234", title: "All-day event", date: "2024-01-14" },
-              { id: "4321", title: "Timed event", date: "2024-01-28" },
+              {
+                id: "1234",
+                title: "All-day event",
+                date: "2024-01-14",
+                classType: "A",
+                memberName: "홍길동",
+                attendance: "출석",
+              },
+              {
+                id: "4321",
+                title: "Timed event",
+                date: "2024-01-28",
+                classType: "B",
+                memberName: "홍길서",
+                attendance: "결석",
+              },
             ]}
           />
         </Box>
       </Box>
-      <Dialog open={dialogOpen} onClose={handleDialogClose}>
-      <DialogTitle>이벤트 정보 입력</DialogTitle>
-        <DialogContent>
+      <Dialog open={dialogOpen} onClose={handleDialogClose} backgroundColor={colors.primary[400]}>
+      <DialogTitle color={colors.grey[100]}>이벤트 정보 입력</DialogTitle>
+        <DialogContent sx={{
+                '& label': {
+                  // placeholder text color
+                  color: colors.greenAccent[300],
+                },
+                '& label.Mui-focused': {
+                  // 해당 input focus 되었을 때 placeholder text color
+                  // floatng label을 사용할 때 처리 필요하다
+                  color: colors.primary[400],
+                },
+                '& label.Mui-error': {
+                  color: colors.redAccent[700],
+                },
+                '& .MuiOutlinedInput-root': { 
+                  color: `${colors.grey[100]} !important`,
+                  '& fieldset': {
+                    borderColor: colors.blueAccent[700],
+                  },
+                },  
+                '& .MuiButton-text': {
+                    color : `${colors.grey[500]} !important`,
+                },                              
+              }}>
           <TextField
             label="Selected Date"
             value={formatDate(eventData.start, {
@@ -196,6 +270,11 @@ const Calendar = () => {
             InputProps={{
               readOnly: true,
             }}
+            sx={{
+              ' .MuiOutlinedInput-root': {
+                color: colors.grey[900],
+                },
+              }}            
           />
           <TextField
             label="Title"
@@ -229,7 +308,9 @@ const Calendar = () => {
             fullWidth
             margin="normal"
           />
-          <Button onClick={handleConfirmClick}>확인</Button>
+          <Box display="flex" justifyContent="end" mt="20px">
+            <Button onClick={handleConfirmClick} color="secondary" variant="contained">확인</Button>
+          </Box>          
         </DialogContent>
       </Dialog>
     </Box>
