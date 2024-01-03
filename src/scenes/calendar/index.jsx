@@ -33,6 +33,7 @@ const Calendar = () => {
     classType: "",
     memberName: "",
     attendance: "",
+    dateStr: "",
   });
 
   const calendarRef = useRef();
@@ -60,30 +61,38 @@ const Calendar = () => {
     setDialogOpen(false);
   };
   const handleDateClick = (info) => {
-    setEventData({
-      title: "",
-      classType: "",
-      memberName: "",
-      attendance: "",
-      start: info.dateStr,
-      end: info.dateStr,
-    });
-
-    setDialogOpen(true);
+    // if ((info.start != null) && (info.start != "")){
+      setEventData({
+        title: "",
+        classType: "",
+        memberName: "",
+        attendance: "",
+        start: info.start,
+        end: info.start,
+      });
+  
+      setDialogOpen(true); 
+    // }
+    // else
+    // {
+    //   alert("날짜를 가져오지 못했슈~ \n잘좀 가져와 바유~ \n팝업창은 안띄울겨~\n\n[info.start" + info.start + "]");
+    // }
   };
 
   const handleConfirmClick = () => {
-    const { title, classType, memberName, attendance } = eventData;
+    const { title, classType, memberName, attendance, start} = eventData;
     const calendarApi = calendarRef.current?.getApi();
 
-    if (calendarApi) {
-      const selectedDate = calendarApi.getSelected()[0].start;
+    alert(start);
+
+    if (calendarApi && (start !== null) && (start !== "")) {
+      const selectedDate = start;   //calendarApi.getSelected()[0].start;
 
       calendarApi.addEvent({
-        id: `${selectedDate.toISOString()}-${title}`,
+        id: `${selectedDate}-${title}`,
         title,
-        start: selectedDate,
-        end: selectedDate,
+        start: start,
+        end: start,
         allDay: true,
         classType,
         memberName,
@@ -137,8 +146,8 @@ const Calendar = () => {
                     <Typography>
                       {formatDate(event.start, {
                         year: "numeric",
-                        month: "short",
-                        day: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
                       })}
                     </Typography>
                   }
@@ -179,8 +188,8 @@ const Calendar = () => {
             label="Selected Date"
             value={formatDate(eventData.start, {
               year: "numeric",
-              month: "short",
-              day: "numeric",
+              month: "2-digit",
+              day: "2-digit",
             })}
             fullWidth
             margin="normal"
