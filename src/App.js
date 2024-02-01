@@ -15,6 +15,7 @@ import Bar from "./scenes/bar";
 import Pie from "./scenes/pie";
 import Line from "./scenes/line";
 import Geography from "./scenes/geography";
+//import BasicMap from "./ApiKakaoMap";
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
               <Route path="/pie" element={<Pie/>} />
               <Route path="/line" element={<Line/>} />
               <Route path="/geography" element={<Geography/>} />
+              {/* <Route path="/map" element={<BasicMap/>} /> */}
             </Routes>
           </main>
         </div>
