@@ -5,27 +5,32 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import Header from "../../components/Header"
 
 const initialValues = {
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
-    contact: "",
-    address1: "",
-    address2: "",
+    address: "",
+    phone1: "",
+    phone2: "",
+    classKind: "",
+    dueDate: "",
 };
 
 const phoneRegExp = 
     /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const userSchema = yup.object().shape({
-    firstName: yup.string().required("required"),
-    lastName: yup.string().required("required"),
+    name: yup.string().required("required"),
     email: yup.string().email("Invalid email").required("required"),
-    contact: yup
+    address: yup.string().required("required"),
+    phone1: yup
         .string()
         .matches(phoneRegExp, "Phone Number is not valid")
         .required("required"),
-    address1: yup.string().required("required"),
-    address2: yup.string().required("required"),
+    phone2: yup
+        .string()
+        .matches(phoneRegExp, "Phone Number is not valid")
+        .required("required"),
+    classKind: yup.string().required("required"),
+    dueDate: yup.string().required("required"),
 });
 
 const Form = () => {
@@ -57,26 +62,13 @@ const Form = () => {
                                 fullWidth 
                                 variant="filled"
                                 type="text"
-                                label="First Name"
+                                label="Name"
                                 onBlur={handleBlur} 
                                 onChange={handleChange}
-                                value={values.firstName}
-                                name="firstName"
-                                error={!!touched.firstName && !!errors.firstName}
-                                helperText={touched.firstName && errors.firstName}
-                                sx={{gridColumn : "span 2"}}
-                            />
-                            <TextField  
-                                fullWidth 
-                                variant="filled"
-                                type="text"
-                                label="Last Name"
-                                onBlur={handleBlur} 
-                                onChange={handleChange}
-                                value={values.lastName}
-                                name="lastName"
-                                error={!!touched.lastName && !!errors.lastName}
-                                helperText={touched.lastName && errors.lastName}
+                                value={values.name}
+                                name="name"
+                                error={!!touched.name && !!errors.name}
+                                helperText={touched.name && errors.name}
                                 sx={{gridColumn : "span 2"}}
                             />
                             <TextField  
@@ -90,51 +82,78 @@ const Form = () => {
                                 name="email"
                                 error={!!touched.email && !!errors.email}
                                 helperText={touched.email && errors.email}
-                                sx={{gridColumn : "span 4"}}
+                                sx={{gridColumn : "span 2"}}
                             />
                             <TextField  
                                 fullWidth 
                                 variant="filled"
                                 type="text"
-                                label="Contact Number"
+                                label="Phone 1"
                                 onBlur={handleBlur} 
                                 onChange={handleChange}
-                                value={values.contact}
-                                name="contact"
-                                error={!!touched.contact && !!errors.contact}
-                                helperText={touched.contact && errors.contact}
-                                sx={{gridColumn : "span 4"}}
+                                value={values.phone1}
+                                name="phone1"
+                                error={!!touched.phone1 && !!errors.phone1}
+                                helperText={touched.phone1 && errors.phone1}
+                                sx={{gridColumn : "span 2"}}
                             />
                             <TextField  
                                 fullWidth 
                                 variant="filled"
                                 type="text"
-                                label="Address 1"
+                                label="Phone2"
                                 onBlur={handleBlur} 
                                 onChange={handleChange}
-                                value={values.address1}
-                                name="address1"
-                                error={!!touched.address1 && !!errors.address1}
-                                helperText={touched.address1 && errors.address1}
-                                sx={{gridColumn : "span 4"}}
+                                value={values.phone2}
+                                name="phone2"
+                                error={!!touched.phone2 && !!errors.phone2}
+                                helperText={touched.phone2 && errors.phone2}
+                                sx={{gridColumn : "span 2"}}
                             />
                             <TextField  
                                 fullWidth 
                                 variant="filled"
                                 type="text"
-                                label="Address 2"
+                                label="Class Kind"
                                 onBlur={handleBlur} 
                                 onChange={handleChange}
-                                value={values.address2}
-                                name="address2"
-                                error={!!touched.address2 && !!errors.address2}
-                                helperText={touched.address2 && errors.address2}
+                                value={values.classKind}
+                                name="classKind"
+                                error={!!touched.classKind && !!errors.classKind}
+                                helperText={touched.classKind && errors.classKind}
+                                sx={{gridColumn : "span 2"}}
+                            />
+                            <TextField  
+                                fullWidth 
+                                variant="filled"
+                                type="text"
+                                label="Due Date"
+                                onBlur={handleBlur} 
+                                onChange={handleChange}
+                                value={values.dueDate}
+                                name="dueDate"
+                                error={!!touched.dueDate && !!errors.dueDate}
+                                helperText={touched.dueDate && errors.dueDate}
+                                sx={{gridColumn : "span 2"}}
+                            />                            
+                            <TextField  
+                                fullWidth 
+                                variant="filled"
+                                type="text"
+                                label="Address"
+                                onBlur={handleBlur} 
+                                onChange={handleChange}
+                                value={values.address}
+                                name="address"
+                                error={!!touched.address && !!errors.address}
+                                helperText={touched.address && errors.address}
                                 sx={{gridColumn : "span 4"}}
                             />
+
                         </Box>
                         <Box display="flex" justifyContent="end" mt="20px">
                             <Button type="submit" color="secondary" variant="contained">
-                                Create New User
+                                Create New Member
                             </Button>
                         </Box>
                     </form>
