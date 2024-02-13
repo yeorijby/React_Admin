@@ -60,44 +60,44 @@ app.listen(process.env.PORT, () => {
 const { Schema } = mongoose;
 
 //  
-const membersSchema = new Schema({
-    _id  : {
-        type : String,
-        require : true,
-    },  
-    id  : {
-      type : Number,
-      require : true,
-    },
-    name  : {
-        type : String,
-        require : true,
-    },
-    email  : {
-        type : String,
-        require : false,
-    },
-    address  : {
-        type : String,
-        require : true,
-    },
-    phone1  : {
-        type : String,
-        require : true,
-    },
-    phone2  : {
-        type : String,
-        require : false,
-    },
-    classKind  : {
-        type : String,
-        require : true,
-    },
-    dueDate  : {
-        type : Number,
-        require : true,
-    },
-});
+// const membersSchema = new Schema({
+//     _id  : {
+//         type : String,
+//         require : true,
+//     },  
+//     id  : {
+//       type : Number,
+//       require : true,
+//     },
+//     name  : {
+//         type : String,
+//         require : true,
+//     },
+//     email  : {
+//         type : String,
+//         require : false,
+//     },
+//     address  : {
+//         type : String,
+//         require : true,
+//     },
+//     phone1  : {
+//         type : String,
+//         require : true,
+//     },
+//     phone2  : {
+//         type : String,
+//         require : false,
+//     },
+//     classKind  : {
+//         type : String,
+//         require : true,
+//     },
+//     dueDate  : {
+//         type : Number,
+//         require : true,
+//     },
+// });
 
 
 
@@ -114,33 +114,40 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
   console.log('Connected to MongoDB');
   // Now you can perform database operations here
-});
 
-// Define a schema for your contacts collection
-const contactSchema = new mongoose.Schema({
-  id: Number,
-  name: String,
-  email: String,
-  address: String,
-  phone1: String,
-  phone2: String,
-  dueDate: Number,
-  classKind: String,
-});
-
-// Create a model based on the schema
-RA_Member = mongoose.model('Members', contactSchema);
-
-// 이거는 입력할때 한번만 하면 되는 부분임!
-// Insert mock data into the database
-RA_Member.insertMany(mockDataContacts)
-  .then(docs => {
-    console.log('Mock data 입력을 성공했시유:', docs);
-  })
-  .catch(err => {
-    console.error('mock data 입력중에 오류가 발생했시유:', err);
+  // Define a schema for your contacts collection
+  const contactSchema = new mongoose.Schema({
+    id: Number,
+    name: String,
+    email: String,
+    address: String,
+    phone1: String,
+    phone2: String,
+    dueDate: Number,
+    classKind: String,
   });
 
+  // ReactAdmin DB에 연결
+  const ReactAdminDB = db.useDb('ReactAdmin');
+
+  // Member 컬렉션에 접근
+  const Member = ReactAdminDB.model('Member', contactSchema); // yourSchema에는 스키마 객체가 있어야 합니다.
+
+  // ReactAdmin DB에서 Member 컬렉션 찾기
+  //db.collection('Member', (err, collection) => {
+  //  if (err) throw err;
+  //  console.log("Member 컬렉션에 접속했습니다.");
+
+    // Insert mock data into the Member collection
+    Member.insertMany(mockDataContacts)
+      .then(docs => {
+        console.log('Mock data 입력을 성공했시유:', docs);
+      })
+      .catch(err => {
+        console.error('mock data 입력중에 오류가 발생했시유:', err);
+      });
+  //});
+});
 //-----------------------------------------------------------------------------------------------
 
 console.log('접속 부분 지남');
